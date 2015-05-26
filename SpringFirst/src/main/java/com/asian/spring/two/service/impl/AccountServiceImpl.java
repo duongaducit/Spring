@@ -55,4 +55,22 @@ public class AccountServiceImpl implements AccountService{
 		accountDao.saveJob(listResult);
 	}
 
+
+	public int getMaxPage(List<TaskJob> list,int recordInPage) {
+		// TODO Auto-generated method stub
+		return accountDao.getMaxPage(list,recordInPage);
+	}
+
+
+	public List<TaskJob> list(List<TaskJob> list,int currentPage, int recordInPage) {
+		// TODO Auto-generated method stub
+		return accountDao.list(list,currentPage,recordInPage);
+	}
+
+
+	public boolean checkTask(String idTask, List<TaskJob> list) {
+		// TODO Auto-generated method stub
+		return accountDao.checkTask(idTask,list);
+	}
+
 }

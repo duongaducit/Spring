@@ -14,5 +14,8 @@ public interface AccountService {
 	TaskJob getTask(String idTask, List<TaskJob> list);
 	List<TaskJob> search(String keyword,List<TaskJob> list);
 	void saveJob(List<TaskJob> listResult);
+	int getMaxPage(List<TaskJob> list,int recordInPage);
+	List<TaskJob> list(List<TaskJob> list,int currentPage, int recordInPage);
+	boolean checkTask(String idTask, List<TaskJob> list);
 	
 }

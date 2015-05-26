@@ -32,22 +32,33 @@ public class AccountController {
 	private AccountService accountService;
 	private List<TaskJob> list;
 	private List<TaskJob> listResult;
+	private List<TaskJob> listCurrent;
+	
+	private int currentPage = 0;
+	private int recordInPage = 3;
+	private int maxPage;
+	
 	private Date timeUpdate = new Date(new java.util.Date().getTime());
+	private boolean SortByName = true;
+	private boolean SortByID = true;
 	
 	@RequestMapping("/")
-	public ModelAndView listContact(ModelAndView model) throws IOException{
+	public ModelAndView listTask(ModelAndView model) throws IOException{
 		if (list == null){
 		list = accountService.list();
 		listResult = accountService.list();
 		}
-		model.addObject("list", list);
+		maxPage = accountService.getMaxPage(listResult,recordInPage);
+		listCurrent = accountService.list(list,currentPage,recordInPage);
+		model.addObject("list", listCurrent);
+		model.addObject("maxPage", maxPage);
 		model.setViewName("index");
 		
 		return model;
 	}
 	
 	@RequestMapping(value = "/newTask", method = RequestMethod.GET)
-	public ModelAndView newAccount(ModelAndView model) {
+	public ModelAndView newTask(ModelAndView model) {
 		TaskJob task= new TaskJob();
 		task.setTimeUpdate(timeUpdate);
 		model.addObject("task", task);
@@ -56,15 +67,18 @@ public class AccountController {
 	}
 	
 	@RequestMapping(value = "/saveTask", method = RequestMethod.POST)
-	public ModelAndView saveContact(@ModelAttribute TaskJob task) {
+	public ModelAndView saveTask(@ModelAttribute TaskJob task) {
 		task.setTimeUpdate(timeUpdate);
+		if (!accountService.checkTask(task.getIdTask(),list)){
+			currentPage = maxPage;
+		}
 		accountService.saveOrUpdate(task,list);		
 		copy(listResult, list);
 		return new ModelAndView("redirect:/");
 	}
 	
 	@RequestMapping(value = "/deleteTask", method = RequestMethod.GET)
-	public ModelAndView deleteContact(HttpServletRequest request) {
+	public ModelAndView deleteTask(HttpServletRequest request) {
 		String idTask = (request.getParameter("idTask"));
 		accountService.delete(idTask,list);
 		copy(listResult, list);
@@ -73,18 +87,31 @@ public class AccountController {
 	
 	@RequestMapping(value = "/sortById")
 	public ModelAndView sortById() {
+		if (SortByID){
 		Collections.sort(this.list, TaskJob.ID_TASK);
+		SortByID = false;
+		}else{
+			Collections.sort(this.list, TaskJob.TASK_ID);
+			SortByID = true;
+		}
+		
 		return new ModelAndView("redirect:/");
 	}
 	
 	@RequestMapping(value = "/sortByName")
 	public ModelAndView sortByName() {
+		if (SortByName){
 		Collections.sort(this.list, TaskJob.TASK_NAME_COMPARETO);
+		SortByName = false;
+		}else{
+			Collections.sort(this.list, TaskJob.COMPARETO_NAME);
+			SortByName = true;
+		}
 		return new ModelAndView("redirect:/");
 	}
 	
 	@RequestMapping(value = "/editTask", method = RequestMethod.GET)
-	public ModelAndView editContact(HttpServletRequest request) {
+	public ModelAndView editTask(HttpServletRequest request) {
 		String idTask = (request.getParameter("idTask"));
 		TaskJob task = accountService.getTask(idTask,list);
 		ModelAndView model = new ModelAndView("Task");
@@ -112,6 +139,13 @@ public class AccountController {
 		return new ModelAndView("redirect:/");
 	}
 	
+	@RequestMapping(value = "/selectPage")
+	public ModelAndView selectPage(HttpServletRequest request) {
+		int pageInt = Integer.parseInt(request.getParameter("page"));
+		currentPage = pageInt;
+		System.out.println(currentPage);
+		return new ModelAndView("redirect:/");
+	}
 	public void copy(List<TaskJob> list1,List<TaskJob> list2){
 		list1.removeAll(list1);
 		for (int i = 0;i < list2.size();i++)

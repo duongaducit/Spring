@@ -15,4 +15,7 @@ public interface AccountDAO {
 	public TaskJob getTask(String idTask, List<TaskJob> list);
 	public List<TaskJob> search(String keyword,List<TaskJob> list);
 	public void saveJob(List<TaskJob> listResult);
+	public int getMaxPage(List<TaskJob> list,int recordInPage);
+	public List<TaskJob> list(List<TaskJob> list,int currentPage, int recordInPage);
+	public boolean checkTask(String idTask, List<TaskJob> list);
 }

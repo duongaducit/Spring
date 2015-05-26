@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.asian.spring.two.dao.AccountDAO;
 import com.asian.spring.two.entity.Account;
 import com.asian.spring.two.entity.TaskJob;
+
 import java.sql.PreparedStatement;
 
 @Service(AccountDAO.NAME_DAO)
@@ -154,6 +156,43 @@ public class AccountDAOImpl implements AccountDAO {
 		return check;
 	}
 
+	public int getMaxPage(List<TaskJob> list,int recordInPage) {
+		// TODO Auto-generated method stub
+		int max = 1;
+		if (list.size()%recordInPage == 0){
+			max = (list.size()/recordInPage);
+		}else{
+			max = (list.size()/recordInPage) + 1;
+		}
+		System.out.println(max);
+		return max;
+	}
+	/*
+	 * get list paging
+	 * @see com.asian.spring.two.dao.AccountDAO#list(java.util.List, int, int)
+	 */
+	public List<TaskJob> list(List<TaskJob> list,int currentPage, int recordInPage) {
+		List<TaskJob> listCurrent = new ArrayList<TaskJob>();
+		Collections.sort(list,TaskJob.ID_TASK);
+		for (int i = 0;i < recordInPage;i++){
+			if ((currentPage*recordInPage + i) < list.size())
+			listCurrent.add(list.get(currentPage*recordInPage + i));
+		}
+		
+		return listCurrent;
+	}
+
+	public boolean checkTask(String idTask, List<TaskJob> list) {
+		boolean check = false;
+		for (int i = 0;i < list.size();i++){
+			if (idTask.equals(list.get(i).getIdTask())){
+				check = true;
+			}
+		}
+		
+		return check;
+	}
+	
 	public DataSource getDataSources() {
 		return dataSources;
 	}
@@ -161,5 +200,5 @@ public class AccountDAOImpl implements AccountDAO {
 	public void setDataSources(DataSource dataSources) {
 		this.dataSources = dataSources;
 	}
-
+	
 }

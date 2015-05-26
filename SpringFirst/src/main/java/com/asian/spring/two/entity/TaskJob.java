@@ -7,13 +7,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-public class TaskJob implements Serializable{
+public class TaskJob implements Serializable {
 	private String idTask;
 	private String nameTask;
 	private Date timeUpdate;
 	private String statusTask;
 	private boolean publicTask;
-
 
 	public TaskJob() {
 		super();
@@ -27,7 +26,7 @@ public class TaskJob implements Serializable{
 		this.timeUpdate = timeUpdate;
 		this.statusTask = statusTask;
 		this.publicTask = publicTask;
-		
+
 	}
 
 	public String getIdTask() {
@@ -73,32 +72,64 @@ public class TaskJob implements Serializable{
 	public static Comparator<TaskJob> TASK_NAME_COMPARETO = new Comparator<TaskJob>() {
 
 		public int compare(TaskJob s1, TaskJob s2) {
-		   String taskName1 = s1.getNameTask().toUpperCase();
-		   String taskName2 = s2.getNameTask().toUpperCase();
+			String taskName1 = s1.getNameTask().toUpperCase();
+			String taskName2 = s2.getNameTask().toUpperCase();
 
-		   //ascending order
-		   return taskName1.compareTo(taskName2);
+			// ascending order
+			return taskName1.compareTo(taskName2);
 
-		   //descending order
-	    }};
+			// descending order
+		}
+	};
 
-	    /*Comparator for sorting the list by roll no*/
-	    public static Comparator<TaskJob> ID_TASK = new Comparator<TaskJob>() {
+	/* Comparator for sorting the list by roll no */
+	public static Comparator<TaskJob> ID_TASK = new Comparator<TaskJob>() {
 
 		public int compare(TaskJob s1, TaskJob s2) {
 
-		   String taskIdN1 = s1.getIdTask();
-		   String taskIdN2 = s2.getIdTask();
+			String taskIdN1 = s1.getIdTask();
+			String taskIdN2 = s2.getIdTask();
 
-		   /*For ascending order*/
-		   return taskIdN1.compareTo(taskIdN2);
+			/* For ascending order */
+			return taskIdN1.compareTo(taskIdN2);
 
-		   /*For descending order*/
-		   //rollno2-rollno1;
-	   }};
-	    @Override
-	    public String toString() {
-	        return "[ id =" + idTask + ", name =" + nameTask + ", time =" + timeUpdate + "]";
-	    }
+			/* For descending order */
+			// rollno2-rollno1;
+		}
+	};
+
+	public static Comparator<TaskJob> COMPARETO_NAME = new Comparator<TaskJob>() {
+
+		public int compare(TaskJob s1, TaskJob s2) {
+			String taskName1 = s1.getNameTask().toUpperCase();
+			String taskName2 = s2.getNameTask().toUpperCase();
+
+			// ascending order
+			return taskName2.compareTo(taskName1);
+
+			// descending order
+		}
+	};
+
+	/* Comparator for sorting the list by roll no */
+	public static Comparator<TaskJob> TASK_ID = new Comparator<TaskJob>() {
+
+		public int compare(TaskJob s1, TaskJob s2) {
+
+			String taskIdN1 = s1.getIdTask();
+			String taskIdN2 = s2.getIdTask();
+
+			/* For ascending order */
+			return taskIdN2.compareTo(taskIdN1);
+
+			/* For descending order */
+			// rollno2-rollno1;
+		}
+	};
+	@Override
+	public String toString() {
+		return "[ id =" + idTask + ", name =" + nameTask + ", time ="
+				+ timeUpdate + "]";
+	}
 
 }
