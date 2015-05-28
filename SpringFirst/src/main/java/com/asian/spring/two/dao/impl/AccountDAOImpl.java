@@ -173,7 +173,6 @@ public class AccountDAOImpl implements AccountDAO {
 	 */
 	public List<TaskJob> list(List<TaskJob> list,int currentPage, int recordInPage) {
 		List<TaskJob> listCurrent = new ArrayList<TaskJob>();
-		Collections.sort(list,TaskJob.ID_TASK);
 		for (int i = 0;i < recordInPage;i++){
 			if ((currentPage*recordInPage + i) < list.size())
 			listCurrent.add(list.get(currentPage*recordInPage + i));
@@ -193,6 +192,36 @@ public class AccountDAOImpl implements AccountDAO {
 		return check;
 	}
 	
+	public int getCurrentPage(String idTask, List<TaskJob> list,
+			int recordInPage) {
+		int post = 0;
+		for (int i = 0;i < list.size();i++){
+			if (idTask.equals(list.get(i).getIdTask())){
+				post = i;
+			}
+		}
+		
+		return post/recordInPage;
+	}
+	
+	public void changePublic(String idTask, List<TaskJob> list) {
+		for (int i = 0;i < list.size();i++){
+			if (idTask.equals(list.get(i).getIdTask())){
+				list.get(i).setPublicTask(!list.get(i).isPublicTask());
+			}
+		}
+		System.out.println("change");
+	}
+	
+	public void changeStatus(String idTask,String statusTask, List<TaskJob> list) {
+		for (int i = 0;i < list.size();i++){
+			if (idTask.equals(list.get(i).getIdTask())){
+				list.get(i).setStatusTask(statusTask);
+			}
+		}
+		System.out.println("changeSTT");
+	}
+	
 	public DataSource getDataSources() {
 		return dataSources;
 	}
@@ -200,5 +229,7 @@ public class AccountDAOImpl implements AccountDAO {
 	public void setDataSources(DataSource dataSources) {
 		this.dataSources = dataSources;
 	}
+	
+	
 	
 }

@@ -73,4 +73,23 @@ public class AccountServiceImpl implements AccountService{
 		return accountDao.checkTask(idTask,list);
 	}
 
+
+	public int getCurrentPage(String idTask, List<TaskJob> list, int recordInPage) {
+		// TODO Auto-generated method stub
+		return accountDao.getCurrentPage(idTask,list,recordInPage);
+	}
+
+
+	public void changePublic(String idTask, List<TaskJob> list) {
+		accountDao.changePublic(idTask,list);
+		
+	}
+
+
+	public void changeStatus(String idTask, String statusTask,
+			List<TaskJob> list) {
+		accountDao.changeStatus(idTask,statusTask,list);
+		
+	}
+
 }

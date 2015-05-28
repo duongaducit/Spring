@@ -18,4 +18,9 @@ public interface AccountDAO {
 	public int getMaxPage(List<TaskJob> list,int recordInPage);
 	public List<TaskJob> list(List<TaskJob> list,int currentPage, int recordInPage);
 	public boolean checkTask(String idTask, List<TaskJob> list);
+	public int getCurrentPage(String idTask, List<TaskJob> list,
+			int recordInPage);
+	public void changePublic(String idTask, List<TaskJob> list);
+	public void changeStatus(String idTask, String statusTask,
+			List<TaskJob> list);
 }

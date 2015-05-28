@@ -9,59 +9,92 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/add.js" >
+</script>
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <title>Task Manager Home</title>
 </head>
 <body>
-	<div align="center">
-		<h1>Account List</h1>
-
-		<table id = "table">
-			<tr>
-				<th><a href="sortById"><button value="idTask">idTask</button>
-				</a></th>
-				<th><a href="sortByName"><button value="nameTask">nameTask</button>
-				</a></th>
-				<th>timeUpdat</th>
-				<th>statusTask</th>
-				<th>publicTask</th>
-				<th>acctionTask</th>
-			</tr>
-			<c:forEach var="account" items="${list}" varStatus="status">
-				<tr class = "alt">
-					<td>${account.idTask}</td>
-					<td>${account.nameTask}</td>
-					<td>${account.timeUpdate}</td>
-					<td>${account.statusTask }</td>
-					<td><input type="checkbox" value="true"
-						<c:if test="${account.publicTask}">checked</c:if> /></td>
-					<td><a href="editTask?idTask=${account.idTask}">Edit</a>
-						&nbsp;&nbsp;&nbsp;&nbsp; <a
-						href="deleteTask?idTask=${account.idTask}">Delete</a></td>
-
+	<div class="panel-group">
+		<div class="panel-footers">
+			<label class="title">Task List</label>
+		</div>
+		<!-- footer 1 -->
+		<div class="panel-footer">
+			<a href="newTask" class="btn btn-primary btn-sm active" role="button">Add</a>
+			<label class="label-total">record ${currentRecord } in total
+				${maxRecord }</label>
+		</div>
+		<!-- footer 2 -->
+		<div class="panel-body">
+			<table class="table table-bordered">
+				<tr>
+					<th><a href="sortById"><button value="idTask"
+								class="th-button">Id Task</button> </a></th>
+					<th><a href="sortByName"><button value="nameTask"
+								class="th-button">Name Task</button> </a></th>
+					<th>Time Update</th>
+					<th>Status Task</th>
+					<th>Public Task</th>
+					<th>Acction Task</th>
 				</tr>
-			</c:forEach>
-		</table>
+				<c:forEach var="account" items="${list}" varStatus="status">
+					<tr>
+						<td>${account.idTask}</td>
+						<td>${account.nameTask}</td>
+						<td>${account.timeUpdate}</td>
+						<td><select id = "select" onchange="changeStatus('${account.idTask}',this);">
+								<option value="Done!" ${account.statusTask == "Done!" ? 'selected' : ''}/>Done!
+								<option value="Doing..." ${account.statusTask == "Doing..." ? 'selected' : ''}/>Doing...
+								<option value="Do not." ${account.statusTask == "Do not." ? 'selected' : ''}/>Do not.						
+						</select> </td>
+						<td><input type="checkbox" value="true"
+							<c:if test="${account.publicTask}">checked</c:if>  onclick="clickChange('${account.idTask}')"/></td>
+						<td><a href="editTask?idTask=${account.idTask}"><span class="glyphicon glyphicon-edit"></span></a>
+							&nbsp;&nbsp;&nbsp;&nbsp; 
+							<a href="deleteTask?idTask=${account.idTask}" onclick="clickDelete()"><span class="glyphicon glyphicon-remove"></span>
+							</a></td>
 
-		<ul class="pagination">
-			<c:forEach var="page" begin="1" end="${maxPage}">
-			<li><a href="selectPage?page=${page-1}">${page}</a></li>
-			</c:forEach>
-		</ul>
+					</tr>
+				</c:forEach>
+			</table>
+		</div>
+		<!-- body -->
+		<div class="panel-footer">
 
-		<form action="search" method="post">
-			<input type="text" name="keyword"> <input type="submit"
-				value="Search">
-		</form>
-		<h3>
-			<a href="newTask">New Task</a>
-		</h3>
-		<h3>
-			<a href="saveJob">Save job</a>
-		</h3>
+			<div class="row">
+				<div class="col-sm-4">
+					<ul class="pagination">
+						<c:forEach var="page" begin="1" end="${maxPage}">
+							<c:choose>
+								<c:when test="${currentPage eq (page - 1)}">
+									<li class="active"><a href="selectPage?page=${page-1}">${page}</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="selectPage?page=${page-1}">${page}</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</ul>
+				</div>
+				<div class="col-sm-4">
+					<form action="search" method="post" class="form-inline">
+						<input type="text" name="keyword"> <input type="submit"
+							value="Search" class="btn btn-success btn-sm">
+					</form>
+				</div>
+				<div class="col-sm-4">
+					<a href="saveJob" class = "newTask" onclick="saveSQL()"><button>Save</button> </a>
+				</div>
+			</div>
+		</div>
+		<!-- footer 3 -->
 	</div>
-
 </body>
 </html>

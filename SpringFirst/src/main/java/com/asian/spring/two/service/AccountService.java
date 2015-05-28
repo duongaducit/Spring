@@ -17,5 +17,8 @@ public interface AccountService {
 	int getMaxPage(List<TaskJob> list,int recordInPage);
 	List<TaskJob> list(List<TaskJob> list,int currentPage, int recordInPage);
 	boolean checkTask(String idTask, List<TaskJob> list);
+	int getCurrentPage(String idTask, List<TaskJob> list,int recordInPage);
+	void changePublic(String idTask, List<TaskJob> list);
+	void changeStatus(String idTask, String statusTask, List<TaskJob> list);
 	
 }

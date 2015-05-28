@@ -6,10 +6,21 @@ import java.sql.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 
 public class TaskJob implements Serializable {
+	
+	@NotNull
+	@NotEmpty
 	private String idTask;
+	
+	@NotNull
+	@NotEmpty
 	private String nameTask;
+	
 	private Date timeUpdate;
 	private String statusTask;
 	private boolean publicTask;
